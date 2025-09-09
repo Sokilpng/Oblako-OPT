@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Oblako - Оптовый отдел</title>
+    <meta name="description" content="Более 3000 топовых товаров для вашего вейп-шопа" />
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&subset=latin,cyrillic" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #222222;
+            --tg-theme-button-color: #40a7e3;
+            --tg-theme-button-text-color: #ffffff;
+            --primary-pink: #ff43a1;
+            --secondary-pink: #f91d88;
+            --light-bg: #fbfbfb;
+            --dark-bg: #17161c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* БЕЛЫЙ ФОН ДЛЯ TELEGRAM */
+        body {
+            background: #ffffff !important;
+            min-height: 100vh !important;
+            font-family: 'Unbounded', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--tg-theme-text-color);
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        .tg-theme-bg-color {
+            background: #ffffff !important;
+        }
+
+        .t-mini-app {
+            max-width: 100%;
+            padding: 12px;
+            margin: 0 auto;
+            background: #ffffff !important;
+        }
+
+        /* Header Mini */
+        .header-mini {
+            background: var(--dark-bg);
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .header-mini-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-mini {
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-mini img {
+            height: 100%;
+            width: auto;
+        }
+
+        .menu-toggle {
+            background: var(--primary-pink);
+            color: var(--light-bg);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 22, 28, 0.98);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .menu-item {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 15px 0;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .menu-item:hover {
+            color: var(--primary-pink);
+        }
+
+        .menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Mini */
+        .hero-mini {
+            background: linear-gradient(135deg, var(--primary-pink), var(--secondary-pink));
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .hero-title-mini {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle-mini {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .cta-button-mini {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--primary-pink);
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Brands Mini */
+        .brands-mini {
+            background: var(--light-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .brands-scroll {
+            display: flex;
+            animation: scrollBrands 10s linear infinite;
+            gap: 20px;
+        }
+
+        .brand-item {
+            color: var(--primary-pink);
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Why Section Mini */
+        .why-mini {
+            margin-bottom: 20px;
+        }
+
+        .section-title-mini {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--dark-bg);
+            text-align: center;
+        }
+
+        /* Accordion Mini */
+        .accordion-mini {
+            background: var(--light-bg);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 16px;
+            background: var(--light-bg);
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--dark-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            padding: 0 16px 16px;
+            font-size: 14px;
+            color: var(--dark-bg);
+            line-height: 1.5;
+            display: none;
+        }
+
+        /* Form Mini */
+        .form-mini {
+            background: var(--light-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-title-mini {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            color: var(--dark-bg);
+        }
+
+        .input-mini {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--primary-pink);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            background: #ffffff;
+            color: var(--dark-bg);
+        }
+
+        .submit-mini {
+            width: 100%;
+            background: var(--primary-pink);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .submit-mini.sent {
+            background: #4CAF50;
+        }
+
+        .telegram-note {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Footer Mini */
+        .footer-mini {
+            background: var(--dark-bg);
+            border-radius: 16px;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .footer-section-mini {
+            margin-bottom: 16px;
+        }
+
+        .footer-title-mini {
+            color: var(--primary-pink);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer-text-mini {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .footer-link-mini {
+            color: var(--primary-pink);
+            text-decoration: none;
+        }
+
+        /* Tilda atom style */
+        .tn-atom {
+            transition-duration: 0.5s;
+            opacity: 1;
+            transition-delay: 0.5s;
+            width: 115px;
+            height: 45px;
+        }
+
+        /* Animations */
+        @keyframes scrollBrands {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 360px) {
+            .hero-title-mini {
+                font-size: 20px;
+            }
+            
+            .hero-subtitle-mini {
+                font-size: 14px;
+            }
+            
+            .cta-button-mini {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .menu-item {
+                font-size: 16px;
+                padding: 12px 0;
+            }
+        }
+
+        /* Safe area insets for notch phones */
+        @supports (padding: max(0px)) {
+            .t-mini-app {
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right));
+                padding-bottom: max(12px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="t-mini-app">
+        <!-- Header -->
+        <div class="header-mini">
+            <div class="header-mini-content">
+                <div class="logo-mini">
+                    <img src="https://optim.tildacdn.com/tild3739-3638-4862-b565-666134653932/-/resize/392x/-/format/webp/logo_polnoe_oblaka_3.png.webp" alt="Oblako">
+                </div>
+                <button class="menu-toggle">Меню</button>
+            </div>
+        </div>
+
+        <!-- Menu Overlay -->
+        <div class="menu-overlay" id="menuOverlay">
+            <button class="menu-close">×</button>
+            <div class="menu-content">
+                <a href="#form" class="menu-item">Получить прайс</a>
+                <a href="#" class="menu-item">Каталог товаров</a>
+                <a href="#" class="menu-item">О компании</a>
+                <a href="#" class="menu-item">Доставка и оплата</a>
+                <a href="#" class="menu-item">Контакты</a>
+                <div class="tn-atom"></div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-mini">
+            <h1 class="hero-title-mini">ОПТОВЫЙ ОТДЕЛ</h1>
+            <p class="hero-subtitle-mini">Более 3000 топовых SKU для вашего магазина</p>
+            <a href="#form" class="cta-button-mini">Получить прайс-лист</a>
+        </div>
+
+        <!-- Brands Marquee -->
+        <div class="brands-mini">
+            <div class="brands-scroll">
+                <span class="brand-item">BRUSKO</span>
+                <span class="brand-item">SMOKE KITCHEN</span>
+                <span class="brand-item">VOODOO LAB</span>
+                <span class="brand-item">GLITCH SAUCE</span>
+                <span class="brand-item">ELMERK</span>
+                <span class="brand-item">LERMONT</span>
+                <span class="brand-item">TRAIN LAB</span>
+                <span class="brand-item">HQD</span>
+                <span class="brand-item">PLONQ</span>
+                <span class="brand-item">ELFBAR</span>
+                <!-- Дублируем для непрерывной анимации -->
+                <span class="brand-item">BRUSKO</span>
+                <span class="brand-item">SMOKE KITCHEN</span>
+                <span class="brand-item">VOODOO LAB</span>
+                <span class="brand-item">GLITCH SAUCE</span>
+                <span class="brand-item">ELMERK</span>
+                <span class="brand-item">LERMONT</span>
+                <span class="brand-item">TRAIN LAB</span>
+                <span class="brand-item">HQD</span>
+                <span class="brand-item">PLONQ</span>
+                <span class="brand-item">ELFBAR</span>
+            </div>
+        </div>
+
+        <!-- Why Section -->
+        <div class="why-mini">
+            <h2 class="section-title-mini">ПОЧЕМУ OBLAKO?</h2>
+            
+            <div class="accordion-mini">
+                <button class="accordion-header">
+                    <span>1. АКТУАЛЬНОСТЬ НА РЫНКЕ</span>
+                    <span>+</span>
+                </button>
+                <div class="accordion-content">
+                    Мы на опыте личных розничных точек знаем, какие товары пользуются спросом.
+                </div>
+            </div>
+
+            <div class="accordion-mini">
+                <button class="accordion-header">
+                    <span>2. СКОРОСТЬ</span>
+                    <span>+</span>
+                </button>
+                <div class="accordion-content">
+                    Отгрузка в день оплаты транспортными компаниями СДЭК и другими.
+                </div>
+            </div>
+
+            <div class="accordion-mini">
+                <button class="accordion-header">
+                    <span>3. ГИБКИЕ ЦЕНЫ</span>
+                    <span>+</span>
+                </button>
+                <div class="accordion-content">
+                    Цена снижается от объема заказа. Особенные цены для франчайзи.
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div id="form" class="form-mini">
+            <h3 class="form-title-mini">Свяжитесь с нами в Telegram</h3>
+            <form id="contactForm">
+                <input type="text" class="input-mini" placeholder="Ваше имя" required>
+                <input type="text" class="input-mini" placeholder="Ваш Telegram @username" required>
+                <input type="tel" class="input-mini" placeholder="Ваш телефон (необязательно)">
+                <button type="submit" class="submit-mini">Написать в Telegram</button>
+            </form>
+            <p class="telegram-note">
+                После отправки формы мы напишем вам в Telegram
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-mini">
+            <div class="footer-section-mini">
+                <h4 class="footer-title-mini">КОМПАНИЯ "OBLAKO"</h4>
+                <p class="footer-text-mini">
+                    <a href="https://t.me/oblako_opt" class="footer-link-mini" target="_blank">Telegram канал</a><br>
+                    <a href="https://t.me/oblako_manager" class="footer-link-mini" target="_blank">Менеджер</a>
+                </p>
+            </div>
+
+            <div class="footer-section-mini">
+                <h4 class="footer-title-mini">КОНТАКТЫ</h4>
+                <p class="footer-text-mini">
+                    Поддержка: support@oblako.ru<br>
+                    Телефон: +7 (999) 123-45-67
+                </p>
+            </div>
+
+            <div class="footer-section-mini">
+                <h4 class="footer-title-mini">РЕКВИЗИТЫ</h4>
+                <p class="footer-text-mini">
+                    ИП EXAMPLE<br>
+                    ИНН: 000000000000<br>
+                    ОГРН: 0000000000000
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Telegram Web App initialization
+        let tg = window.Telegram.WebApp;
+        
+        // Expand the app to full height
+        tg.expand();
+        
+        // Set background color to white
+        tg.setBackgroundColor('#ffffff');
+        
+        // Handle back button
+        tg.BackButton.onClick(() => {
+            tg.close();
+        });
+
+        // Menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuClose = document.querySelector('.menu-close');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        menuToggle.addEventListener('click', () => {
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        menuClose.addEventListener('click', () => {
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isOpen = content.style.display === 'block';
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion-content').forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                document.querySelectorAll('.accordion-header span:last-child').forEach(icon => {
+                    icon.textContent = '+';
+                });
+                
+                // Open clicked one
+                if (!isOpen) {
+                    content.style.display = 'block';
+                    this.querySelector('span:last-child').textContent = '−';
+                }
+            });
+        });
+
+        // Form submission for Telegram contact
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: this.querySelector('input[type="text"]').value,
+                telegram: this.querySelector('input[placeholder*="Telegram"]').value.replace('@', ''),
+                phone: this.querySelector('input[type="tel"]').value || 'Не указан',
+                user_id: tg.initDataUnsafe?.user?.id || 'Неизвестно',
+                username: tg.initDataUnsafe?.user?.username || 'Неизвестно',
+                timestamp: new Date().toLocaleString('ru-RU')
+            };
+            
+            // Формируем сообщение для бота
+            const message = `📨 Новая заявка от клиента:
+
+👤 Имя: ${formData.name}
+📱 Telegram: @${formData.telegram}
+📞 Телефон: ${formData.phone}
+🆔 ID пользователя: ${formData.user_id}
+🔗 Username: @${formData.username}
+⏰ Время: ${formData.timestamp}
+
+💬 Свяжитесь с клиентом: https://t.me/${formData.telegram}`;
+            
+            // Send data to Telegram bot
+            tg.sendData(JSON.stringify({
+                type: 'new_lead',
+                data: formData,
+                message: message
+            }));
+            
+            // Минимальная обратная связь
+            const submitBtn = this.querySelector('.submit-mini');
+            submitBtn.textContent = '✓ Отправлено';
+            submitBtn.classList.add('sent');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                submitBtn.textContent = 'Написать в Telegram';
+                submitBtn.classList.remove('sent');
+            }, 2000);
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Handle theme changes
+        tg.onEvent('themeChanged', () => {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#ffffff');
+            document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#222222');
+        });
+
+        // Initialize theme
+        if (tg.themeParams) {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#ffffff');
+            document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#222222');
+        }
+
+        // Pre-fill form with Telegram user data if available
+        document.addEventListener('DOMContentLoaded', function() {
+            if (tg.initDataUnsafe?.user) {
+                const user = tg.initDataUnsafe.user;
+                if (user.first_name) {
+                    document.querySelector('input[placeholder="Ваше имя"]').value = user.first_name;
+                }
+                if (user.username) {
+                    document.querySelector('input[placeholder*="Telegram"]').value = user.username;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
